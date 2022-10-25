@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    
+    <title>Игра "Угадай число"</title>
+    
+    <style>
+        #poleVvoda, #tryButton, #vsego_popytok {
+            display: none;
+        }
+        body {
+            letter-spacing: 0.06em;
+        }
+        h1 {
+            font: 35px/45px Franklin Gothic Medium cursive,Georgia, sans-serif;
+            color: Blueviolet;
+            text-align: center;
+            margin: 50px auto 20px;
+        }
+        
+        #nazhmi_na_knopku {
+           font: 28px/30px 	Georgia,Comic Sans MS,sans-serif;
+           color: Darksalmon  ; 
+           text-align: center;
+           margin: 48px auto;
+        }
+        
+        #Start {
+            background-color: Coral;
+            color: blue;
+            font: 20px/24px Georgia, Arial, sans-serif;
+			font-weight:bold;
+            letter-spacing: 0.1em;
+            width: 200px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2px solid lime;
+            box-shadow: 5px 20px 50px rgba(16, 112, 177, 0.2);
+            display: block;
+            margin: 50px auto;
+            cursor: pointer;
+        }
+        
+        .container {
+           border: 1px solid Darkorchid; 
+           width: 40%;
+           height: 500px;
+           margin: 0 auto;
+           display: flex;
+           flex: none;
+           flex-direction: column;
+		   gap: 5px;
+           background: transparent;
+           border-radius: 15px;
+           justify-content: center;
+        }
+        .inner1 {
+            margin: 0 auto;
+
+        }  
+        .inner2 {
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .inner3 {
+            margin: 0 auto;
+        }
+        
+        #tryButton {
+            background-color: Darksalmon;
+            color: black;
+            font: 24px/32px Georgia,Comic Sans MS, sans-serif;
+            font-weight:bold;
+            letter-spacing: 0.1em;
+            width: 100px;
+            height: 80px;
+			border:none;
+            border-radius: 10%;
+            margin: 40px 70px;
+            cursor: pointer;
+        }
+        input {
+            display: block;
+        }
+        #poleVvoda {
+            width: 100px;
+            height: 60px;
+            text-align: center;
+            border: 4px ridge lime;
+			border-radius: 10%;
+            margin: 20px;
+        }
+        
+        #putNum {
+            font: 22px/32px Georgia,Comic Sans MS, sans-serif;
+            color: DarkBlue;
+            text-align: center;
+            margin: 15px auto;
+        }
+        
+        #vsego_popytok {
+           font: 18px/24px Georgia,Comic Sans MS, sans-serif;
+            color: orange;
+			border-radius: 15px;
+            margin: 15px 60% 15px 0;
+            padding-left: 10px;
+			text-align: center;
+            background-color:blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Игра "Угадай число"</h1>
+    <div class="container">
+        <div class="inner1">
+            <h5 id="nazhmi_na_knopku">Для начала игры нажмите кнопку</h5>
+            <button type="button" id="Start">Начать игру</button>
+        </div>
+        <div class="inner2">
+                <h5 id="putNum"></h5>
+             <div class="inner3">
+				  <input type="text" id="poleVvoda">
+				
+                <button type="button" id="tryButton">OK</button><br> 
+            </div>
+            
+                <p id="vsego_popytok"></p>
+        </div>
+    </div>
+    <script>
+        let counter = 0;
+        let quest;
+        let ans;
+        let text = 'Для начала игры нажмите кнопку';
+        let putNum = ' ';
+        
+      
+            document.getElementById('Start').onclick = function(){
+            putNum = ' ';
+            document.getElementById('putNum').innerHTML = putNum;
+            document.getElementById('Start').style.display = "none";
+            text = 'Введите число от 1 до 100';
+            document.getElementById('nazhmi_na_knopku').innerHTML = text;
+            document.getElementById('tryButton').style.display = "inline-block";
+            document.getElementById('poleVvoda').style.display = "inline-block";
+            document.getElementById('vsego_popytok').style.display = "block";
+            counter = 0;
+            document.getElementById('vsego_popytok').innerHTML = `Попыток:  ${counter}`;
+            quest = Math.floor(Math.random() * 100 + 1);
+            console.log(quest);
+            }
+        
+            document.getElementById('tryButton').onclick = function(){
+            counter++;
+            
+            ans = document.getElementById('poleVvoda').value;
+			
+            
+            if (counter>=10) {
+                goToStart();
+            
+            } else if (isNaN(ans)) {
+               checkAnswerText('Я просил ввести число!');
+               text = ' ';
+               document.getElementById('nazhmi_na_knopku').innerHTML = text;
+               document.getElementById('vsego_popytok').innerHTML = `Попыток:  ${counter}`;
+               counter--;
+            } else if (ans > 100) {
+                checkAnswerText('Введите число от 1 до 100!');
+                counter--;
+            
+            } else if (quest == ans){
+                rightAnswer();
+                
+            }else if (quest > ans){
+                checkAnswerText('Надо больше!');
+                
+            } else {
+                checkAnswerText('Надо меньше!'); 
+            }
+
+            document.getElementById('vsego_popytok').innerHTML = `Попыток:  ${counter}`;
+            }
+        
+            function goToStart() {
+                document.getElementById('Start').style.display = "inline-block";
+                document.getElementById('tryButton').style.display = "none";
+                document.getElementById('poleVvoda').style.display = "none";
+                document.getElementById('vsego_popytok').style.display = "none";
+                document.getElementById('vsego_popytok').innerHTML = "";
+                text = 'Для начала игры нажмите кнопку';
+                document.getElementById('nazhmi_na_knopku').innerHTML = text;
+                putNum = "";
+                document.getElementById('putNum').innerHTML = putNum;
+            }
+            
+            function rightAnswer() {
+                document.getElementById('poleVvoda').style.display = "none";
+                document.getElementById('tryButton').style.display = "none";
+                document.getElementById('vsego_popytok').style.display = "none";
+                document.getElementById('nazhmi_na_knopku').style.display = "none";
+                putNum = `Ура! Вы угадали с ${counter} попыток. Сыграем еще раз?`;
+                document.getElementById('putNum').innerHTML = putNum;
+                document.getElementById('Start').style.display = "inline-block";
+                counter = 10;
+            }
+            
+            function checkAnswerText(answer) {
+                putNum = answer;
+                document.getElementById('putNum').innerHTML = putNum;   
+            }
+    </script>
+</body>
+</html>
+
